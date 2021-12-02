@@ -13,7 +13,7 @@ public class DB {
 	public static Connection connection = null;
 
 	public static Connection getConnection() {
-		if (connection != null) {
+		if (connection == null) {
 			try {
 				Properties properties = loadProperties();
 				String url = properties.getProperty("dburl");
