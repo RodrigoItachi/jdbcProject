@@ -1,21 +1,28 @@
 package application;
 
+import java.util.List;
 import java.util.Locale;
 
 import model.dao.DAOFactory;
 import model.dao.SellerDAO;
+import model.entities.Department;
 import model.entities.Seller;
 
 public class Program {
 
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.CANADA);
-		
+
 		SellerDAO sellerDAO = DAOFactory.createSellerDAO();
-		
+
 		System.out.println("==== TEST 1: seller findById =====");
 		Seller seller = sellerDAO.findById(3);
 		System.out.print(seller);
+
+		System.out.println("\n\n==== TEST 2: seller findByDepartment =====");
+		List<Seller> list = sellerDAO.findByDepartment(new Department(2, null));
+		list.forEach(System.out::println);
+
 	}
 
 }
