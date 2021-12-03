@@ -12,6 +12,8 @@ public class Program {
 		Locale.setDefault(Locale.CANADA);
 		
 		SellerDAO sellerDAO = DAOFactory.createSellerDAO();
+		
+		System.out.println("=== TEST 1: seller findById =====");
 		Seller seller = sellerDAO.findById(3);
 		System.out.print(seller);
 	}
