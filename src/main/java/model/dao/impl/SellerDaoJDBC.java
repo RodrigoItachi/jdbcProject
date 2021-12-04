@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,6 +62,27 @@ public class SellerDaoJDBC implements SellerDAO {
 
 	@Override
 	public void update(Seller seller) {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			preparedStatement = connection.prepareStatement(
+					"UPDATE seller SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? WHERE Id = ?");
+			preparedStatement.setString(1, seller.getName());
+			preparedStatement.setString(2, seller.getEmail());
+			preparedStatement.setDate(3, new Date(seller.getBirthDate().getTime()));
+			preparedStatement.setDouble(4, seller.getBaseSalary());
+			preparedStatement.setInt(5, seller.getDepartment().getId());
+			preparedStatement.setInt(6, seller.getId());
+			
+			preparedStatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeResultSet(resultSet);
+			DB.closeStatement(preparedStatement);
+		}
 	}
 
 	@Override
