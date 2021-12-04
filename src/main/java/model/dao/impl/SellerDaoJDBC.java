@@ -63,7 +63,6 @@ public class SellerDaoJDBC implements SellerDAO {
 	@Override
 	public void update(Seller seller) {
 		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
 
 		try {
 			preparedStatement = connection.prepareStatement(
@@ -74,19 +73,34 @@ public class SellerDaoJDBC implements SellerDAO {
 			preparedStatement.setDouble(4, seller.getBaseSalary());
 			preparedStatement.setInt(5, seller.getDepartment().getId());
 			preparedStatement.setInt(6, seller.getId());
-			
+
 			preparedStatement.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
-			DB.closeResultSet(resultSet);
 			DB.closeStatement(preparedStatement);
 		}
 	}
 
 	@Override
 	public void deleteById(Integer id) {
+		PreparedStatement preparedStatement = null;
+
+		try {
+			preparedStatement = connection.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			preparedStatement.setInt(1, id);
+			int row = preparedStatement.executeUpdate();
+
+			if (row == 0) {
+				throw new DbException("Non-existent id!");
+			}
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(preparedStatement);
+		}
 	}
 
 	@Override
